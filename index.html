@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>投资书籍收藏</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        .book-list {
+            display: grid;
+            gap: 16px;
+        }
+        .book-item {
+            background: white;
+            border-radius: 12px;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .book-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+        }
+        .book-title {
+            flex: 1;
+            font-size: 1rem;
+            color: #333;
+            margin-right: 16px;
+        }
+        .download-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            transition: opacity 0.2s;
+        }
+        .download-btn:hover {
+            opacity: 0.9;
+        }
+        .footer {
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            margin-top: 40px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>投资书籍收藏</h1>
+        <div class="book-list" id="bookList"></div>
+        <div class="footer">
+            <p>共 <span id="count">0</span> 本书籍</p>
+        </div>
+    </div>
+    <script>
+        const books = [
+            "投资中不简单的事_邱国鹭_中国纺织_2018.1.pdf",
+            "《沃伦·巴菲特：终极金钱心智》罗伯特·哈格斯特朗【文字版_PDF电子书_雅书】 (1).pdf",
+            "《巴菲特幕后智囊：查理·芒格传【股神巴菲特作序推荐，芒格本人及巴菲特亲自授权，价值投资和提升思维能力的必读经典！】》珍妮特·洛尔【文字版_PDF电子书_下载】.pdf",
+            "《投资的本质：段永平讲述投资的底层逻辑》孙力科【文字版_PDF电子书_雅书】.pdf",
+            "《文明、现代化、价值投资与中国（增订版）》李录【文字版_PDF电子书_雅书】.pdf",
+            "《查理·芒格致股东的信》李永宁【文字版_PDF电子书_下载】.pdf",
+            "《段永平投资问答录：大道至简的财富逻辑》马小奔【文字版_PDF电子书_雅书】.pdf",
+            "《沃伦·巴菲特：终极金钱心智》罗伯特·哈格斯特朗【文字版_PDF电子书_雅书】.pdf",
+            "一本书读懂财报（清华会计系主任肖星课程，秒通财报，从本书开始）.pdf",
+            "大道：段永平投资问答录.pdf",
+            "投资中最简单的事.pdf",
+            "周期+-+霍华德·马克斯.pdf",
+            "巴菲特致股东的信：投资原则篇（巴菲特亲荐，但斌倾情做序，揭示贯穿巴菲特整个投资生涯、多年长盛不衰的基本原则）+-+杰里米·米勒.pdf",
+            "《价值投资者的财报分析》夏立军+&+李莫愁【文字版_PDF电子书_下载】.pdf",
+            "《一个投机者的告白·实战版（集结大师智慧精髓，详解实战案例，德国"股神"、欧洲的沃伦·巴菲特、20世纪股市见证人科斯托拉尼投资法实战全解析）》安纳金【文字版_PDF电子.pdf",
+            "《慢慢变富2：普通人的成功投资》闲来一坐s话投资【文字版_PDF电子书_雅书】.pdf",
+            "《价值投资3.0：数字经济时代如何寻找百倍成长股》亚当·西塞尔【文字版_PDF电子书_雅书】.pdf",
+            "《雪球名家带你价值投资（套装共6册）》张延昆+&+任俊杰+&+朱晓芸+&+杨旭然+&+常宏+&+望京博格+&+静逸投资【文字版_PDF电子书_下载】.pdf"
+        ];
+
+        function cleanTitle(filename) {
+            return filename
+                .replace('【文字版_PDF电子书_雅书】', '')
+                .replace('【文字版_PDF电子书_下载】', '')
+                .replace('【文字版_PDF电子.pdf', '')
+                .replace('.pdf', '')
+                .replace(/_/g, ' ');
+        }
+
+        const bookList = document.getElementById('bookList');
+        const countSpan = document.getElementById('count');
+
+        books.forEach(book => {
+            const item = document.createElement('div');
+            item.className = 'book-item';
+            item.innerHTML = `
+                <span class="book-title">${cleanTitle(book)}</span>
+                <a href="${encodeURIComponent(book)}" class="download-btn" download>下载</a>
+            `;
+            bookList.appendChild(item);
+        });
+
+        countSpan.textContent = books.length;
+    </script>
+</body>
+</html>
