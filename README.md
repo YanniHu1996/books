@@ -28,7 +28,27 @@
 
 https://yannihu1996.github.io/books/
 
-## 本地调试
+点击书籍条目即可下载 PDF 文件。
+
+## 下载方式
+
+**方式一：网页下载**
+访问在线页面，点击书籍即可下载。
+
+**方式二：克隆仓库**
+```bash
+git clone https://github.com/YanniHu1996/books.git
+cd books
+
+# 安装 Git LFS（如果尚未安装）
+brew install git-lfs
+git lfs install
+
+# 拉取 LFS 文件（自动下载所有 PDF）
+git lfs pull
+```
+
+## 本地预览
 
 ```bash
 # 克隆仓库

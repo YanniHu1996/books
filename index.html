@@ -219,12 +219,12 @@
 
         const bookList = document.getElementById('bookList');
         const countSpan = document.getElementById('count');
+        const baseUrl = 'https://github.com/YanniHu1996/books/raw/master/';
 
         books.forEach(book => {
             const item = document.createElement('a');
             item.className = 'book-item';
-            item.href = encodeURIComponent(book.file);
-            item.download = '';
+            item.href = baseUrl + encodeURIComponent(book.file);
             item.innerHTML = `
                 <div class="book-info">
                     <div class="book-title">${book.title}</div>
